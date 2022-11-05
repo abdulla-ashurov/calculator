@@ -3,8 +3,7 @@
 
 #include <string>
 #include <deque>
-
-#include "../include/token.hpp"
+#include "token.hpp"
 
 namespace calc
 {

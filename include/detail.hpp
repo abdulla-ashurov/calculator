@@ -20,30 +20,6 @@ namespace detail
         INCORRECT = 0b00001010
     };
 
-    detail::Types define_type(const std::string &value)
-    {
-        detail::Types defined_type;
-
-        if (detail::is_operand(value))
-            defined_type = detail::Types::OPERAND;
-        else if (detail::is_plus(value))
-            defined_type = detail::Types::ADDITION;
-        else if (detail::is_minus(value))
-            defined_type = detail::Types::SUBTRACTION;
-        else if (detail::is_multiplication(value))
-            defined_type = detail::Types::MULTIPLICATION;
-        else if (detail::is_division(value))
-            defined_type = detail::Types::DIVISION;
-        else if (detail::is_open_bracket(value))
-            defined_type = detail::Types::OPEN_BRACKET;
-        else if (detail::is_close_bracket(value))
-            defined_type = detail::Types::CLOSE_BRACKET;
-        else
-            defined_type = detail::Types::INCORRECT;
-
-        return defined_type;
-    }
-
     bool is_number(const char s)
     {
         return s >= '0' && s <= '9';
@@ -96,6 +72,30 @@ namespace detail
     bool is_close_bracket(const std::string &value)
     {
         return value == ")";
+    }
+
+    detail::Types define_type(const std::string &value)
+    {
+        detail::Types defined_type;
+
+        if (detail::is_operand(value))
+            defined_type = detail::Types::OPERAND;
+        else if (detail::is_plus(value))
+            defined_type = detail::Types::ADDITION;
+        else if (detail::is_minus(value))
+            defined_type = detail::Types::SUBTRACTION;
+        else if (detail::is_multiplication(value))
+            defined_type = detail::Types::MULTIPLICATION;
+        else if (detail::is_division(value))
+            defined_type = detail::Types::DIVISION;
+        else if (detail::is_open_bracket(value))
+            defined_type = detail::Types::OPEN_BRACKET;
+        else if (detail::is_close_bracket(value))
+            defined_type = detail::Types::CLOSE_BRACKET;
+        else
+            defined_type = detail::Types::INCORRECT;
+
+        return defined_type;
     }
 
     void put_operand(std::string &operand, calc::tokens &t)
