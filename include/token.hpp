@@ -4,7 +4,7 @@
 #include <string>
 #include "detail.hpp"
 
-class Token
+struct Token
 {
     std::string value;
     detail::Types type;

@@ -3,6 +3,7 @@
 
 #include <string>
 #include "calculator.hpp"
+#include "token.hpp"
 
 namespace detail
 {
@@ -113,12 +114,88 @@ namespace detail
             if (type == detail::Types::ADDITION)
                 type = detail::Types::UNARY_PLUS;
             else if (type == detail::Types::SUBTRACTION)
-                type == detail::Types::UNARY_MINUS;
+                type = detail::Types::UNARY_MINUS;
         }
         else 
             st.pop();
-        
+
         t.push_back(Token(s, type));
+    }
+
+    void put_all_elements_before_open_bracket(std::stack<Token> &st, calc::tokens &prefix)
+    {
+        while (st.top().get_type() != detail::Types::CLOSE_BRACKET)
+        {
+            prefix.push_back(st.top());
+            st.pop();
+        }
+        st.pop();
+    }
+
+    void put_operator(const Token &token, calc::tokens &prefix, std::stack<Token> &st)
+    {
+        while (!st.empty() && token.get_type() <= st.top().get_type())
+        {
+            prefix.push_back(st.top());
+            st.pop();
+        }
+        st.push(token);
+    }
+
+    void calculate_one_operand(const double operand, const detail::Types unary_operator, std::stack<double> &st)
+    {
+        switch (unary_operator)
+        {
+        case detail::Types::UNARY_PLUS:
+            st.push(operand);
+            break;
+
+        case detail::Types::UNARY_MINUS:
+            st.push(-operand);
+            break;
+
+        default:
+            throw std::invalid_argument("invalid argument!");
+            break;
+        }
+    }
+
+    void calculate_two_operands(const double first_operand, const double second_operand, const detail::Types type_operator, std::stack<double> &st)
+    {
+        switch (type_operator)
+        {
+        case detail::Types::UNARY_PLUS:
+            st.push(second_operand);
+            st.push(first_operand);
+            break;
+
+        case detail::Types::UNARY_MINUS:
+            st.push(second_operand);
+            st.push(-first_operand);
+            break;
+
+        case detail::Types::ADDITION:
+            st.push(first_operand + second_operand);
+            break;
+
+        case detail::Types::SUBTRACTION:
+            st.push(first_operand - second_operand);
+            break;
+
+        case detail::Types::MULTIPLICATION:
+            st.push(first_operand * second_operand);
+            break;
+
+        case detail::Types::DIVISION:
+            if (second_operand == 0.0)
+                throw std::invalid_argument("we cannot division to zero");
+            st.push(first_operand / second_operand);
+            break;
+
+        default:
+            throw std::invalid_argument("invalid argument!");
+            break;
+        }
     }
 }
 

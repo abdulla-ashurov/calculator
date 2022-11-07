@@ -1,4 +1,6 @@
 #include "catch_amalgamated.hpp"
+#include "../include/detail.hpp"
+#include "../include/token.hpp"
 #include "../include/calculator.hpp"
 
 TEST_CASE("test calc::parse function")
